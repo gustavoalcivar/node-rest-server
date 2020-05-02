@@ -5,8 +5,9 @@ const bcrypt = require('bcrypt')
 const _ = require('underscore')
 
 const Usuario = require('../models/usuario')
+const {verificaToken, verificaAdminRole} = require('../middlewares/autenticacion')
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificaToken, (req, res) => {
     let desde = req.query.desde || 0
     let limite = req.query.limite || 5
     Usuario.find({estado: true}, 'nombre email rol estado google img') // El segundo parámetro indica los campos que queremos obrener en la consulta
@@ -21,7 +22,7 @@ app.get('/usuario', function(req, res) {
         })
 })
 
-app.post('/usuario/', function(req, res) {
+app.post('/usuario/', [verificaToken, verificaAdminRole], (req, res) => {
     let body = req.body
     let usuario = new Usuario({
         nombre: body.nombre,
@@ -39,7 +40,7 @@ app.post('/usuario/', function(req, res) {
     })
 })
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', verificaToken, (req, res) => {
     let id = req.params.id
 
     // pick se usa para indicar los atributos del objeto que si se pueden actualizar
@@ -54,7 +55,7 @@ app.put('/usuario/:id', function(req, res) {
     })
 })
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => {
     let id = req.params.id
     /*Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
         if(err) return res.status(400).json({ok: false, err})
