@@ -12,3 +12,6 @@ process.env.SEMILLA_AUTENTICACION = process.env.SEMILLA_AUTENTICACION || 'este-e
 
 // Base de datos
 process.env.URLDB = process.env.NODE_ENV === 'dev' ? 'mongodb://localhost:27017/cafe' : process.env.MONGO_URI // MONGO_URI es una variable de entorno configurada en Heroku
+
+// Google client ID
+process.env.CLIENT_ID = process.env.CLIENT_ID || '512364339891-11rgkqsiarkb19lqqb79rohee21nf88k.apps.googleusercontent.com'
